@@ -21,4 +21,5 @@ public class ToolsConfig {
 						VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
 
 	}
+	
 }

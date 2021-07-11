@@ -1,5 +1,6 @@
 package app.m2i.medic.configs;
 
+import org.elasticsearch.client.Client;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

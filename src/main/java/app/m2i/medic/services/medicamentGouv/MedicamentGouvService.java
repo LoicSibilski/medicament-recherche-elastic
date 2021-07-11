@@ -7,6 +7,8 @@ import app.m2i.medic.models.mongo.MedicamentGouvMongo;
 
 public interface MedicamentGouvService {
 
+	public List<MedicamentGouvMongo> findByName(String name);
+	
 	public Optional<MedicamentGouvMongo> findById(String id);
 
 	public List<MedicamentGouvMongo> findAll();

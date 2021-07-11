@@ -12,7 +12,7 @@ public class MedicamentGouvElastic {
 	@Id
 	private String id;
 	
-    private String codeCIS;
+    private Integer codeCIS;
     private String denomination;
     private String formePharmaceutique;
     private String voiesAdministration;
