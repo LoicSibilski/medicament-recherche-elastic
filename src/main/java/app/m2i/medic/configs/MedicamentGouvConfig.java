@@ -1,6 +1,7 @@
 package app.m2i.medic.configs;
 
 import org.elasticsearch.client.Client;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,8 +16,8 @@ public class MedicamentGouvConfig {
 	
 	@Bean
 	public MedicamentGouvServiceImpl meidcGouvServiceFactory(ObjectMapper mapper,
-			 MedicamentGouvRepositoryMongo mongoRepository,MedicamentGouvRepositoryElastic elasticRepository) {
-		return new MedicamentGouvServiceImpl(mapper, mongoRepository, elasticRepository);
+			 MedicamentGouvRepositoryMongo mongoRepository,MedicamentGouvRepositoryElastic elasticRepository, RestHighLevelClient client) {
+		return new MedicamentGouvServiceImpl(mapper, mongoRepository, elasticRepository, client);
 	}
 
 

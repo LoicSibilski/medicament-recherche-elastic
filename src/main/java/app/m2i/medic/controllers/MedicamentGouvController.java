@@ -22,9 +22,14 @@ public class MedicamentGouvController {
 	private MedicamentGouvService medicService;
 
 
-	@GetMapping("{id}")
-	public Optional<MedicamentGouvMongo> findById(@PathVariable String id) {
+	@GetMapping("/id/{id}")
+	public MedicamentGouvMongo findById(@PathVariable String id) {
 		return medicService.findById(id);
+	}
+
+	@GetMapping("/denomination/{denomination}")
+	public List<MedicamentGouvMongo> findByDenomination(@PathVariable String denomination) {
+		return medicService.findByDenomination(denomination);
 	}
 
 

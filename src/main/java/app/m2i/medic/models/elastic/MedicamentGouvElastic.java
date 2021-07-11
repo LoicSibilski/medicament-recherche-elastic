@@ -2,6 +2,8 @@ package app.m2i.medic.models.elastic;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import lombok.Data;
 
@@ -13,6 +15,7 @@ public class MedicamentGouvElastic {
 	private String id;
 	
     private Integer codeCIS;
+    
     private String denomination;
     private String formePharmaceutique;
     private String voiesAdministration;
