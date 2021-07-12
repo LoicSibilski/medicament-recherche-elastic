@@ -1,0 +1,9 @@
+{
+    "type": "completion",
+    "contexts": [
+      {
+        "name": "year",
+        "type": "category"
+      }
+    ]
+  }

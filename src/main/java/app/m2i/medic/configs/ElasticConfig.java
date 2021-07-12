@@ -27,9 +27,11 @@ public class ElasticConfig extends ElasticsearchConfigurationSupport {
             .build();
         return RestClients.create(clientConfiguration).rest();
     }
+    
     @Bean
     public ElasticsearchOperations elasticsearchTemplate() {
         return new ElasticsearchRestTemplate(client());
     }
 	
+    
 }

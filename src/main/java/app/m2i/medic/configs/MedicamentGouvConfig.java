@@ -1,5 +1,7 @@
 package app.m2i.medic.configs;
 
+import java.io.IOException;
+
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +18,7 @@ public class MedicamentGouvConfig {
 	
 	@Bean
 	public MedicamentGouvServiceImpl meidcGouvServiceFactory(ObjectMapper mapper,
-			 MedicamentGouvRepositoryMongo mongoRepository,MedicamentGouvRepositoryElastic elasticRepository, RestHighLevelClient client) {
+			 MedicamentGouvRepositoryMongo mongoRepository,MedicamentGouvRepositoryElastic elasticRepository, RestHighLevelClient client) throws IllegalArgumentException, IOException {
 		return new MedicamentGouvServiceImpl(mapper, mongoRepository, elasticRepository, client);
 	}
 
