@@ -3,6 +3,7 @@ package app.m2i.medic.implementations;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -11,6 +12,9 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.apache.lucene.search.TotalHits;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
+import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
 import org.elasticsearch.action.admin.indices.stats.IndicesStatsResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -20,6 +24,7 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.cluster.metadata.IndexMetadata;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -41,6 +46,8 @@ import org.elasticsearch.search.suggest.term.TermSuggestionBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.springframework.data.elasticsearch.core.document.Document;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -58,7 +65,7 @@ public class MedicamentGouvServiceImpl implements MedicamentGouvService {
 	private MedicamentGouvRepositoryElastic elasticRepository;
 
 	public MedicamentGouvServiceImpl(ObjectMapper mapper, MedicamentGouvRepositoryMongo mongoRepository,
-			MedicamentGouvRepositoryElastic elasticRepository, RestHighLevelClient client) {
+			MedicamentGouvRepositoryElastic elasticRepository, RestHighLevelClient client) throws IllegalArgumentException, IOException {
 		this.mapper = mapper;
 		this.mongoRepository = mongoRepository;
 		this.elasticRepository = elasticRepository;
@@ -85,7 +92,7 @@ public class MedicamentGouvServiceImpl implements MedicamentGouvService {
 		SearchRequest searchRequest = new SearchRequest("medicgouv");
 		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
-		CompletionSuggestionBuilder  termSuggestionBuilder = SuggestBuilders.completionSuggestion("denomination")
+		CompletionSuggestionBuilder termSuggestionBuilder = SuggestBuilders.completionSuggestion("denomination")
 				.prefix(denomination);
 		SuggestBuilder suggestBuilder = new SuggestBuilder();
 		suggestBuilder.addSuggestion("suggestio-denomi", termSuggestionBuilder);
@@ -93,97 +100,36 @@ public class MedicamentGouvServiceImpl implements MedicamentGouvService {
 
 		searchRequest.source(searchSourceBuilder);
 		SearchResponse searchResponse = null;
+		
+		System.out.println("oui");
 
 		try {
+			System.out.println("try avant");
 			searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
+			System.out.println("try apres");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("try apres apres");
 
 		Suggest suggest = searchResponse.getSuggest();
+		System.out.println("ouafffffff");
+
 		CompletionSuggestion entries = suggest.getSuggestion("suggestio-denomi");
+		System.out.println("wooooooooooof");
 
 		for (CompletionSuggestion.Entry entry : entries) {
+			System.out.println(entry.getLength());
+			System.out.println(entry.getOptions());
+			System.out.println(entry.getText());
+			System.out.println(entry.getOffset());
+			System.out.println(entry.getClass());
 			for (CompletionSuggestion.Entry.Option option : entry.getOptions()) {
+				System.out.println(option.toString());
 				String suggestText = option.getText().string();
 				System.out.println(suggestText);
 			}
 		}
-
-//		SuggestionBuilder termSuggestionBuilder = SuggestBuilders.termSuggestion("denomination").text(denomination);
-//		SuggestBuilder suggestBuilder = new SuggestBuilder().addSuggestion("suggestion_denomination_medic", termSuggestionBuilder);
-//		
-//		//SearchSourceBuilder sourceBuilder = new SearchSourceBuilder().from(0).size(100).suggest(suggestBuilder);
-//		SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-//		BoolQueryBuilder qb = QueryBuilders.boolQuery();
-//		PrefixQueryBuilder namePQBuilder = QueryBuilders.prefixQuery("denomination", denomination);
-//        qb.should(namePQBuilder);
-//        sourceBuilder.query(qb);
-//
-//		
-//		SearchRequest searchRequest = new SearchRequest().indices("medicgouv").source(sourceBuilder);
-//        System.out.println("Search JSON query \n" + searchRequest.source().toString()); //Generated ES search JSON.
-//
-//		SearchResponse searchResponse;
-//		try {
-//			searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
-//			System.out.println("searchResponse => " + searchResponse.toString());
-//			RestStatus status = searchResponse.status();
-//			System.out.println("Status TRY REST => "  + status);
-//			SearchHits hits = searchResponse.getHits();
-//			System.out.println("hits " + hits.getMaxScore());
-//			SearchHit[] searchHits = hits.getHits();
-//			System.out.println(searchHits.length);
-//			for (SearchHit hit : searchHits) {
-//			    System.out.println(hit.toString());
-//			}
-
-//			Suggest suggest = searchResponse.getSuggest(); 
-//			System.out.println(suggest.toString());
-//			TermSuggestion termSuggestion = suggest.getSuggestion("suggestion_denomination_medic"); 
-//			for (TermSuggestion.Entry entry : termSuggestion.getEntries()) { 
-//				System.out.println(entry.toString());
-//			    for (TermSuggestion.Entry.Option option : entry) {
-//			    	System.out.println("oooo=> +" + option.toString());
-//			        String suggestText = option.getText().string();
-//			        System.out.println("Suggest Text =>> " + suggestText);
-//			    }
-//			}
-
-//			
-//		} catch (IOException e) {
-//			System.out.println("Imple => FindByDenomination =>  searResponse FAILED");
-//			e.printStackTrace();
-//		}
-
-//		BoolQueryBuilder boolQuery = QueryBuilders.boolQuery()
-//				.must(QueryBuilders.matchQuery("denomination", denomination));
-//		SuggestionBuilder suggestionBuilder = new TermSuggestionBuilder("denomination").text(denomination);
-//		SuggestBuilder suggestion = new SuggestBuilder().addSuggestion("my-suggest-1", suggestionBuilder);
-//
-//		SearchRequestBuilder builder = client.search("sample").setTypes("medicgouv").setQuery(boolQuery)
-//				.suggest(suggestion);
-//
-//		SearchResponse searchResponse;
-//		try {
-//			searchResponse = builder.execute().get();
-//
-//			for (SearchHit hit : searchResponse.getHits().getHits()) {
-//			    System.out.println(hit.getSourceAsString());
-//				//LOG.info("Result: " + hit.getSourceAsString());
-//			}
-//		} catch (InterruptedException | ExecutionException e) {
-//			System.out.println("cath ma grosse queue");
-////			    LOG.error("Exception while executing query {}", e);
-//		}
-//		
-//		SearchRequest request = new SearchRequest("medicgouv");
-//		SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-//		searchSourceBuilder.query(boolQuery);
-//		searchSourceBuilder.sort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC);
-//		request.source(searchSourceBuilder);
-//
-//		SearchResponse scrollResp = client.search(sreq);
 
 		System.out.println("ouaf" + denomination);
 		List<MedicamentGouvElastic> medicsElastic = elasticRepository.findByDenomination(denomination);
@@ -193,19 +139,33 @@ public class MedicamentGouvServiceImpl implements MedicamentGouvService {
 		return mongoRepository.findAllById(ids);
 	}
 
-	private void initElasticIndex() {
-		if (checkElasticAlreadyInitialized()) {
+	private void initElasticIndex() throws IllegalArgumentException, IOException {
+//		if (checkElasticAlreadyInitialized()) {
+			System.out.println("moncul");
+			CreateIndexRequest createIndexRequest = new CreateIndexRequest("medicgouv").settings(Settings.builder().put("index.number_of_shards", 1)
+					.put("index.number_of_replicas", 0).put("index.max_result_window", 16000));
+			System.out.println("ouaf");
+//			CreateIndexResponse createIndexResponse = client.indices().create(createIndexRequest, RequestOptions.DEFAULT);
+			System.out.println("kmais");
+			
 			List<MedicamentGouvMongo> liste = mongoRepository.findAll();
 			System.out.println(liste.get(1560));
-			for (MedicamentGouvMongo medic : liste) {
-				elasticRepository.save(mapper.convertValue(medic, MedicamentGouvElastic.class));
-			}
+			for (int i=0; i <300; i++) {
+				
+				String serialisedJson = mapper.writeValueAsString(liste.get(i));
+				System.out.println(liste.get(i).getDenomination());
+				MedicamentGouvElastic medicamentGouvElastic = mapper.readValue(serialisedJson, MedicamentGouvElastic.class);
+				elasticRepository.save(medicamentGouvElastic);
+//			}
 		}
 	}
 
-	private Boolean checkElasticAlreadyInitialized() {
-		List<MedicamentGouvElastic> medicsElastic = elasticRepository.findAll();
-		return medicsElastic.isEmpty();
+	private Boolean checkElasticAlreadyInitialized() throws IOException {
+		
+		GetIndexRequest indexRequest = new GetIndexRequest().indices("medicgouv");
+		return client.indices().exists(indexRequest, RequestOptions.DEFAULT);		
+//		List<MedicamentGouvElastic> medicsElastic = elasticRepository.findAll();
+//		return medicsElastic.isEmpty();
 	}
 
 }

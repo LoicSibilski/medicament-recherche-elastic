@@ -1,13 +1,18 @@
 package app.m2i.medic.models.elastic;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.core.completion.Completion;
 
+import org.springframework.data.elasticsearch.annotations.CompletionField;
+import org.springframework.data.elasticsearch.annotations.Document;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Document(indexName = "medicgouv")
 public class MedicamentGouvElastic {
 	
@@ -16,7 +21,8 @@ public class MedicamentGouvElastic {
 	
     private Integer codeCIS;
     
-    private String denomination;
+    @CompletionField(maxInputLength = 100)
+    private Completion denomination;    
     private String formePharmaceutique;
     private String voiesAdministration;
     private String statutAdministratif;
