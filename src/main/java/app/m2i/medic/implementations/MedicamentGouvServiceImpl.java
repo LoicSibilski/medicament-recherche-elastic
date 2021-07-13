@@ -46,6 +46,7 @@ import org.elasticsearch.search.suggest.term.TermSuggestionBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.springframework.data.elasticsearch.core.completion.Completion;
 import org.springframework.data.elasticsearch.core.document.Document;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.http.HttpStatus;
@@ -65,7 +66,8 @@ public class MedicamentGouvServiceImpl implements MedicamentGouvService {
 	private MedicamentGouvRepositoryElastic elasticRepository;
 
 	public MedicamentGouvServiceImpl(ObjectMapper mapper, MedicamentGouvRepositoryMongo mongoRepository,
-			MedicamentGouvRepositoryElastic elasticRepository, RestHighLevelClient client) throws IllegalArgumentException, IOException {
+			MedicamentGouvRepositoryElastic elasticRepository, RestHighLevelClient client)
+			throws IllegalArgumentException, IOException {
 		this.mapper = mapper;
 		this.mongoRepository = mongoRepository;
 		this.elasticRepository = elasticRepository;
@@ -100,7 +102,7 @@ public class MedicamentGouvServiceImpl implements MedicamentGouvService {
 
 		searchRequest.source(searchSourceBuilder);
 		SearchResponse searchResponse = null;
-		
+
 		System.out.println("oui");
 
 		try {
@@ -140,30 +142,31 @@ public class MedicamentGouvServiceImpl implements MedicamentGouvService {
 	}
 
 	private void initElasticIndex() throws IllegalArgumentException, IOException {
-//		if (checkElasticAlreadyInitialized()) {
+		if (checkElasticAlreadyInitialized()) {
 			System.out.println("moncul");
-			CreateIndexRequest createIndexRequest = new CreateIndexRequest("medicgouv").settings(Settings.builder().put("index.number_of_shards", 1)
-					.put("index.number_of_replicas", 0).put("index.max_result_window", 16000));
+			CreateIndexRequest createIndexRequest = new CreateIndexRequest("medicgouv")
+					.settings(Settings.builder().put("index.number_of_shards", 1).put("index.number_of_replicas", 0)
+							.put("index.max_result_window", 16000));
 			System.out.println("ouaf");
-//			CreateIndexResponse createIndexResponse = client.indices().create(createIndexRequest, RequestOptions.DEFAULT);
 			System.out.println("kmais");
-			
+
 			List<MedicamentGouvMongo> liste = mongoRepository.findAll();
 			System.out.println(liste.get(1560));
-			for (int i=0; i <300; i++) {
-				
-				String serialisedJson = mapper.writeValueAsString(liste.get(i));
+			for (int i = 0; i < 300; i++) {
+
 				System.out.println(liste.get(i).getDenomination());
-				MedicamentGouvElastic medicamentGouvElastic = mapper.readValue(serialisedJson, MedicamentGouvElastic.class);
+				MedicamentGouvElastic medicamentGouvElastic = new MedicamentGouvElastic(liste.get(i));
 				elasticRepository.save(medicamentGouvElastic);
-//			}
+			}
 		}
 	}
 
 	private Boolean checkElasticAlreadyInitialized() throws IOException {
-		
+		System.out.println("JE PASSE DANS LE CHECK POUR VOIR SI YA QQCHOSE EAU MY GODE ");
 		GetIndexRequest indexRequest = new GetIndexRequest().indices("medicgouv");
-		return client.indices().exists(indexRequest, RequestOptions.DEFAULT);		
+		Boolean bool = client.indices().exists(indexRequest, RequestOptions.DEFAULT);
+		System.out.println("WAOW CA EXISTE OUI OU MERDE : " + bool);
+		return bool;
 //		List<MedicamentGouvElastic> medicsElastic = elasticRepository.findAll();
 //		return medicsElastic.isEmpty();
 	}
