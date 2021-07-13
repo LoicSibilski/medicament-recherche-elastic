@@ -19,6 +19,7 @@ services:
             discovery.type: single-node
         volumes:
             - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+            - ./elasticsearch/config/analyser.json:/usr/share/elasticsearch/config/analyser.json
         healthcheck:
             test: curl --cacert /usr/share/elasticsearch/config/certs/ca/ca.crt -s https://localhost:9200 >/dev/null; if [[ $$? == 52 ]]; then echo 0; else echo 1; fi
             interval: 30s
