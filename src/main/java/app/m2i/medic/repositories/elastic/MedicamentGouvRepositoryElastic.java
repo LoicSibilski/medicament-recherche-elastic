@@ -2,7 +2,6 @@ package app.m2i.medic.repositories.elastic;
 
 import java.util.List;
 
-import org.elasticsearch.index.query.QueryBuilder;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 import app.m2i.medic.models.elastic.MedicamentGouvElastic;

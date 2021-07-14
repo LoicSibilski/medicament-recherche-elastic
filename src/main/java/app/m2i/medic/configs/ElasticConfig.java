@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.config.ElasticsearchConfigurationSupport;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.RestClients;
 @Configuration
@@ -32,6 +33,5 @@ public class ElasticConfig extends ElasticsearchConfigurationSupport {
     public ElasticsearchOperations elasticsearchTemplate() {
         return new ElasticsearchRestTemplate(client());
     }
-	
     
 }

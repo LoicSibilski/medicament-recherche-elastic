@@ -2,7 +2,6 @@ package app.m2i.medic.configs;
 
 import java.io.IOException;
 
-import org.elasticsearch.client.Client;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
