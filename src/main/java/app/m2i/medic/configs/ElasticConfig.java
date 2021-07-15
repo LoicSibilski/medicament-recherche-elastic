@@ -7,13 +7,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.config.ElasticsearchConfigurationSupport;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.RestClients;
 @Configuration
-//@EnableElasticsearchRepositories(basePackages = "app.m2i.medic.repositories.elastic")
 public class ElasticConfig extends ElasticsearchConfigurationSupport {
-    @Value("localhost:9200")
+    @Value("elasticsearch:9200")
     private String host;
     @Value("elastic}")
     private String username;
