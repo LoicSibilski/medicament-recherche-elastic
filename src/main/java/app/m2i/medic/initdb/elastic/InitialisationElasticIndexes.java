@@ -32,7 +32,6 @@ public class InitialisationElasticIndexes {
 		this.mongoRepository = mongoRepository;
 		this.elasticRepository = elasticRepository;
 		LOGGER = factory.getElasticLogger(MedicamentGouvServiceImpl.class.getName());
-
 	}
 
 	public void initElasticIndex() throws IOException {

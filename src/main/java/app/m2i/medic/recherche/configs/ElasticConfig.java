@@ -13,8 +13,10 @@ import org.springframework.data.elasticsearch.client.RestClients;
 
 @Configuration
 public class ElasticConfig extends ElasticsearchConfigurationSupport {
-    @Value("localhost:9200")
-    private String host;
+	@Value("elasticsearch:9200")
+	private String host;
+//    @Value("localhost:9200")
+//    private String host;
     @Value("elastic}")
     private String username;
     @Value("changeme")
