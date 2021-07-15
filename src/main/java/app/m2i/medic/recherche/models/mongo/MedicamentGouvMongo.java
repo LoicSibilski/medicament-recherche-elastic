@@ -1,4 +1,4 @@
-package app.m2i.medic.models.mongo;
+package app.m2i.medic.recherche.models.mongo;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

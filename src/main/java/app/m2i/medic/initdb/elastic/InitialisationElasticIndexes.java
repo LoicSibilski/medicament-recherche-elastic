@@ -8,10 +8,10 @@ import org.elasticsearch.client.RestHighLevelClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import app.m2i.medic.models.elastic.MedicamentGouvElastic;
-import app.m2i.medic.models.mongo.MedicamentGouvMongo;
-import app.m2i.medic.repositories.elastic.MedicamentGouvRepositoryElastic;
-import app.m2i.medic.repositories.mongo.MedicamentGouvRepositoryMongo;
+import app.m2i.medic.recherche.models.elastic.MedicamentGouvElastic;
+import app.m2i.medic.recherche.models.mongo.MedicamentGouvMongo;
+import app.m2i.medic.recherche.repositories.elastic.MedicamentGouvRepositoryElastic;
+import app.m2i.medic.recherche.repositories.mongo.MedicamentGouvRepositoryMongo;
 
 public class InitialisationElasticIndexes {
 

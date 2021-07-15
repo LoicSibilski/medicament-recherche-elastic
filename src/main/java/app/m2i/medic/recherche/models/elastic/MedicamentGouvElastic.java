@@ -1,9 +1,9 @@
-package app.m2i.medic.models.elastic;
+package app.m2i.medic.recherche.models.elastic;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.core.completion.Completion;
 
-import app.m2i.medic.models.mongo.MedicamentGouvMongo;
+import app.m2i.medic.recherche.models.mongo.MedicamentGouvMongo;
 
 import org.springframework.data.elasticsearch.annotations.CompletionField;
 import org.springframework.data.elasticsearch.annotations.Document;

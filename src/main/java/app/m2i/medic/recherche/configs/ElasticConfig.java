@@ -1,4 +1,4 @@
-package app.m2i.medic.configs;
+package app.m2i.medic.recherche.configs;
 
 import org.elasticsearch.client.RestHighLevelClient;
 

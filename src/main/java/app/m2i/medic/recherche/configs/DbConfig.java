@@ -1,4 +1,4 @@
-package app.m2i.medic.configs;
+package app.m2i.medic.recherche.configs;
 
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.context.annotation.Bean;
@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import app.m2i.medic.initdb.elastic.InitialisationElasticIndexes;
-import app.m2i.medic.repositories.elastic.MedicamentGouvRepositoryElastic;
-import app.m2i.medic.repositories.mongo.MedicamentGouvRepositoryMongo;
+import app.m2i.medic.recherche.repositories.elastic.MedicamentGouvRepositoryElastic;
+import app.m2i.medic.recherche.repositories.mongo.MedicamentGouvRepositoryMongo;
 
 @Configuration
 public class DbConfig {

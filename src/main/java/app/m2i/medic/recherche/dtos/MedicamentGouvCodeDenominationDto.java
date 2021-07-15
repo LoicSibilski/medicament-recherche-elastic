@@ -1,4 +1,4 @@
-package app.m2i.medic.dtos;
+package app.m2i.medic.recherche.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
