@@ -15,9 +15,9 @@ server:
 spring:
   data:
     mongodb:
-      host: ${MONGO_HOST:mongo}
+      host: ${MONGO_HOST:localhost}
       port: ${MONGO_PORT:27017}    elasticsearch:
-      cluster-node: elastricsearch:9200
+      cluster-node: localhost:9200
       client:
         reactive: 
           password: changeme

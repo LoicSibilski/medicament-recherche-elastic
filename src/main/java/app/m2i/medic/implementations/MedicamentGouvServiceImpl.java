@@ -43,7 +43,6 @@ public class MedicamentGouvServiceImpl implements MedicamentGouvService {
 		this.mongoRepository = mongoRepository;
 		this.elasticRepository = elasticRepository;
 		this.client = client;
-		//this.initElasticIndex();
 	}
 
 	@Override
@@ -96,25 +95,25 @@ public class MedicamentGouvServiceImpl implements MedicamentGouvService {
 		return listeReturned;
 	}
 	
-//	private void initElasticIndex() throws IOException {
-//		if (checkIfIndexExists()) {
-//			List<MedicamentGouvMongo> liste = mongoRepository.findAll();
-//			System.out.println(liste.get(1560));
-//			for (MedicamentGouvMongo medicamentGouvMongo : liste) {
-//				System.out.println(medicamentGouvMongo.getDenomination());
-//				MedicamentGouvElastic medicamentGouvElastic = new MedicamentGouvElastic(medicamentGouvMongo);
-//				elasticRepository.save(medicamentGouvElastic);
-//			}
-//		}
-//	}
-//
-//	private Boolean checkIfIndexExists() throws IOException {
-//
-//		var resp = client.getLowLevelClient().performRequest(new Request("GET", "medicgouv/_stats"));
-//		var body = mapper.readTree(resp.getEntity().getContent());
-//		var size = body.get("indices").get("medicgouv").get("primaries").get("store").get("size_in_bytes");
-//
-//		return size.asInt() <= 208;
-//	}
+	public void initElasticIndex() throws IOException {
+		if (checkIfIndexExists()) {
+			List<MedicamentGouvMongo> liste = mongoRepository.findAll();
+			System.out.println(liste.get(1560));
+			for (MedicamentGouvMongo medicamentGouvMongo : liste) {
+				System.out.println(medicamentGouvMongo.getDenomination());
+				MedicamentGouvElastic medicamentGouvElastic = new MedicamentGouvElastic(medicamentGouvMongo);
+				elasticRepository.save(medicamentGouvElastic);
+			}
+		}
+	}
+
+	private Boolean checkIfIndexExists() throws IOException {
+
+		var resp = client.getLowLevelClient().performRequest(new Request("GET", "medicgouv/_stats"));
+		var body = mapper.readTree(resp.getEntity().getContent());
+		var size = body.get("indices").get("medicgouv").get("primaries").get("store").get("size_in_bytes");
+
+		return size.asInt() <= 208;
+	}
 
 }
