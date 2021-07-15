@@ -1,7 +1,6 @@
 package app.m2i.medic.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,7 +27,7 @@ public class MedicamentGouvController {
 	}
 
 	@GetMapping("/denomination/{denomination}")
-	public List<MedicamentGouvMongo> findByDenomination(@PathVariable String denomination) {
+	public List<String> findByDenomination(@PathVariable String denomination) {
 		return medicService.findByDenomination(denomination);
 	}
 
