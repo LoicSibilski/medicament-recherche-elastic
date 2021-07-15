@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import app.m2i.medic.initdb.elastic.InitialisationElasticIndexes;
 import app.m2i.medic.logs.factories.LoggerFactory;
 import app.m2i.medic.logs.loggers.Logger;
 import app.m2i.medic.recherche.services.MedicamentGouvService;
@@ -24,10 +23,7 @@ public class MedicamentGouvController {
 
 	@Autowired
 	private MedicamentGouvService medicService;
-
-	@Autowired
-	private InitialisationElasticIndexes initElastic;
-
+	
 	public MedicamentGouvController(LoggerFactory factory) {
 		super();
 		this.LOGGER = factory.getElasticLogger(MedicamentGouvController.class.getName());
@@ -37,12 +33,12 @@ public class MedicamentGouvController {
 	public List<String> findByDenomination(@PathVariable String denomination) {
 		LOGGER.info("Recherche d'un médicament avec la suggestion :  " + denomination);
 		try {
-			this.initElastic.initElasticIndex();
+			this.medicService.initElasticIndex();
 		} catch (IOException e) {
 			LOGGER.warn("Erreur dans l'initialisation de l'index ElasticSearch");
 			e.printStackTrace();
 		}
 		return medicService.findByDenomination(denomination);
 	}
-
+	
 }
