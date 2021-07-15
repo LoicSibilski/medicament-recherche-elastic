@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>2.5.0</version>
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>app.m2i.medic</groupId>
 	<artifactId>medicament-recherche</artifactId>
@@ -15,6 +16,8 @@
 	<description>Service de recherche du nom dun medicament avec ElasticSearch</description>
 	<properties>
 		<java.version>11</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
 	</properties>
 	<dependencies>
 		<dependency>
@@ -26,13 +29,9 @@
 			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>org.elasticsearch.client</groupId>
-		    <artifactId>transport</artifactId>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>elasticsearch-rest-client</artifactId>
 		</dependency>
-		<dependency>
-    <groupId>org.elasticsearch.client</groupId>
-    <artifactId>elasticsearch-rest-client</artifactId>
-</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
