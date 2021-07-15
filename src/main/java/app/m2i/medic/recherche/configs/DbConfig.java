@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import app.m2i.medic.initdb.elastic.InitialisationElasticIndexes;
+import app.m2i.medic.logs.factories.LoggerFactory;
 import app.m2i.medic.recherche.repositories.elastic.MedicamentGouvRepositoryElastic;
 import app.m2i.medic.recherche.repositories.mongo.MedicamentGouvRepositoryMongo;
 
@@ -14,8 +15,8 @@ import app.m2i.medic.recherche.repositories.mongo.MedicamentGouvRepositoryMongo;
 public class DbConfig {
 	@Bean
 	public InitialisationElasticIndexes initElastic(RestHighLevelClient client, ObjectMapper mapper,
-			MedicamentGouvRepositoryMongo mongoRepository, MedicamentGouvRepositoryElastic elasticRepository) {
-		return new InitialisationElasticIndexes(client, mapper, mongoRepository, elasticRepository);
+			MedicamentGouvRepositoryMongo mongoRepository, MedicamentGouvRepositoryElastic elasticRepository, LoggerFactory factory) {
+		return new InitialisationElasticIndexes(client, mapper, mongoRepository, elasticRepository, factory);
 	}
 
 }
