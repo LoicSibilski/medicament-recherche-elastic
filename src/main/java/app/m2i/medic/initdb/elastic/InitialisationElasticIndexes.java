@@ -39,16 +39,16 @@ public class InitialisationElasticIndexes {
 			LOGGER.info("Initialisation de la base de donnee elasticsearch");
 			List<MedicamentGouvMongo> liste = mongoRepository.findAll();
 			System.out.println(liste.get(1560));
-			for (int i=0; i<500; i++) {
-				System.out.println(liste.get(i).getDenomination());
-				MedicamentGouvElastic medicamentGouvElastic = new MedicamentGouvElastic(liste.get(i));
-				elasticRepository.save(medicamentGouvElastic);
-			}
-//			for (MedicamentGouvMongo medicamentGouvMongo : liste) {
-//				System.out.println(medicamentGouvMongo.getDenomination());
-//				MedicamentGouvElastic medicamentGouvElastic = new MedicamentGouvElastic(medicamentGouvMongo);
+//			for (int i=0; i<500; i++) {
+//				System.out.println(liste.get(i).getDenomination());
+//				MedicamentGouvElastic medicamentGouvElastic = new MedicamentGouvElastic(liste.get(i));
 //				elasticRepository.save(medicamentGouvElastic);
 //			}
+			for (MedicamentGouvMongo medicamentGouvMongo : liste) {
+				System.out.println(medicamentGouvMongo.getDenomination());
+				MedicamentGouvElastic medicamentGouvElastic = new MedicamentGouvElastic(medicamentGouvMongo);
+				elasticRepository.save(medicamentGouvElastic);
+			}
 		}
 	}
 
